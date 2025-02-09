@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+    }
+    .highlight {
+        color: red;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    }
+    .events-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        justify-content: center;
+        padding-bottom: 20px;
+    }
+    h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        text-align: center;
+        display: block;
+        margin-bottom: 20px;
+    }
+    .event {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    .event h2 {
+        margin-top: 0;
+    }
+    .event-details {
+        display: flex;
+        justify-content: space-between;
+    }
+    .tickets {
+        margin-top: 10px;
+    }
+    .ticket {
+        background: #e8f0fe;
+        justify-content: space-between; 
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 3px;
+    }
+    .sold-out {
+        color: red;
+        font-weight: bold;
+    }
+    .buy-btn {
+        background-color: #28a745;
+        margin-left: 20px; 
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .buy-btn:disabled {
+        background-color: grey;
+    }
+
+    .buy-btn:hover {
+         background: darkgreen;
+     }
+
+    .login-button {
+        background-color: #933a53;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 1.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+    .login-button:hover {
+        background-color: #b30051;
+    }
+    .logo-container {
+        display: flex;           
+        align-items: center;     
+        gap: 10px;     
+    }
+    .logo {
+        width: 50px;  
+        height: 50px;
+    }    
+    .site-name {
+        font-family: 'garamond', sans-serif; 
+        font-size: 24px;  
+        font-weight: bold;
+        color: #333;  
+    }
+
+
+
+  </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="https://i.pinimg.com/736x/06/56/35/065635c226b20732fccbe74bd18c3c0f.jpg" alt="Ticketer Logo" class="logo">
+            <h1 class="site-name">Ticketer</h1>
+        </div>
+        <button class="login-button">Login/Signup </button>
+    </div>
+
+  <h1>Bringing you the <br>
+    <span class="highlight">hottest events</span> in town!</h1>
+    <br>
+  <h2>Upcoming Events!🔥</h2>
+  <div class="events-container" id="events"></div>
+
+  <script>
+    fetch('/api/events/')
+      .then(response => response.json())
+      .then(data => {
+        const eventsDiv = document.getElementById('events');
+        data.forEach(event => {
+          const eventDiv = document.createElement('div');
+          eventDiv.className = 'event';
+
+          let ticketsHTML = "";
+          if (event.tickets.length > 0) {
+            ticketsHTML = event.tickets.map(ticket => `
+              <div class="ticket">
+                <strong>${ticket.category}</strong> - $${ticket.price}
+                <button class="buy-btn">Buy Ticket</button>
+              </div>
+            `).join('');
+          } else {
+            ticketsHTML = '<p class="sold-out">Sold Out</p>';
+          }
+
+          eventDiv.innerHTML = `
+            <h2>${event.title}</h2>
+              <p><strong>Date:</strong> ${new Date(event.date).toLocaleString()}</p>
+              <p><strong>Location:</strong> ${event.location}</p>
+              <p><strong>Description:</strong> ${event.description}</p>
+        
+            <div class="tickets">
+              <h3>Tickets</h3>
+              ${ticketsHTML}
+            </div>
+          `;
+
+          eventsDiv.appendChild(eventDiv);
+        });
+      })
+      .catch(error => console.error('Error fetching events:', error));
+  </script>
+</body>
+</html>
+
+
+  
