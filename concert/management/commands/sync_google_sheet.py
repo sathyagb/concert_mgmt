@@ -14,7 +14,7 @@ class Command(BaseCommand):
         # Using Django's BASE_DIR
         credentials_path = os.path.join(settings.BASE_DIR, 'credentials', 'concert_mgmt.json')
         self.stdout.write(self.style.NOTICE(f"Looking for credentials at: {credentials_path}"))
-        
+
         if not os.path.exists(credentials_path):
             self.stdout.write(self.style.ERROR(f"Credentials file not found at {credentials_path}"))
             return

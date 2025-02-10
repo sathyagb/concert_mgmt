@@ -26,8 +26,9 @@ SECRET_KEY = 'django-insecure-b9%1#+cw#rec!l!z$jca*iinbd)nf3gpat5_ydun4oy*u8lr(d
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'be0b-194-61-40-13.ngrok-free.app',
-    '127.0.0.1'
+    '127.0.0.1',
+    '.ngrok-free.app',
+    '*',
 ]
 
 
@@ -142,4 +143,6 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
 
